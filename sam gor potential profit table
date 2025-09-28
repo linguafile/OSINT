@@ -1,0 +1,34 @@
+import matplotlib.pyplot as plt
+
+# Data
+labels = ['2023 Global', '2023 E/SE Asia', '2024 Victim Avg']
+total_values = [64.0, 40.0, 0.169]
+low_estimates = [25.6, 16.0, 0.0676]
+high_estimates = [44.8, 28.0, 0.1183]
+
+# Calculate height of range (difference between 70% and 40%)
+range_heights = [high - low for high, low in zip(high_estimates, low_estimates)]
+
+# Plot setup
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Total volume bars (light gray)
+ax.bar(labels, total_values, color='lightgray', label='Total Scam Losses')
+
+# Estimated Sam Gor share (red overlay from 40% to 70%)
+ax.bar(labels, range_heights, bottom=low_estimates, color='firebrick', alpha=0.7, label='Sam Gor Estimated Share (40%–70%)')
+
+# Add range labels on top of each red range
+for i, (low, high) in enumerate(zip(low_estimates, high_estimates)):
+    mid = (low + high) / 2
+    ax.text(i, mid, f"${low:.1f}B–{high:.1f}B", ha='center', va='center', color='white', fontweight='bold')
+
+# Labeling
+ax.set_ylabel('USD Billions')
+ax.set_title('Estimated Sam Gor Share of Scam Proceeds (2023–2024)')
+ax.legend()
+ax.set_ylim(0, max(total_values) * 1.15)  # Add space above tallest bar
+
+plt.tight_layout()
+plt.grid(axis='y', linestyle='--', alpha=0.5)
+plt.show()
